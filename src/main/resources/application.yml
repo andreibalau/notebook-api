@@ -1,8 +1,19 @@
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
+
 server:
   port: 8888
+
+keycloak:
+  realm: notebook-realm
+  auth-server-url: http://localhost:8080/auth
+  ssl-required: external
+  resource: notebook-api
+  credentials.secret: 9f81b925-d1d8-455c-939a-0136905236d9
+  use-resource-role-mappings: true
+  bearer-only: true
+
 logging:
   level:
     root: INFO
