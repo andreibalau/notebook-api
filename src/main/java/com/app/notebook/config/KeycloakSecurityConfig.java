@@ -28,6 +28,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                 .anyRequest()
                 .permitAll();
         http.csrf().disable();
+        http.headers().frameOptions().disable();//to have access at h2
     }
 
     @Autowired

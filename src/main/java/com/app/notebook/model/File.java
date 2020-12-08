@@ -1,14 +1,18 @@
 package com.app.notebook.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,8 +24,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "files")
+public class File {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -30,17 +34,12 @@ public class User {
     private UUID id;
 
     @NotBlank
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(name = "path", unique = true, nullable = false)
+    private String path;
 
     @NotBlank
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Email
-    @NotBlank
-    @Column(name = "email", unique = true, nullable = false)
-    private String email;
+    @Column(name = "name", unique = true, nullable = false)
+    private String name;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)
@@ -49,4 +48,21 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @NotNull
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "space_id", nullable = false)
+    private UserSpace space;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<FileRight> rights = new ArrayList<>();
+
+    public void setRights(List<FileRight> rights) {
+        this.rights = rights;
+        rights.forEach(right -> right.setFile(this));
+    }
+
 }
+
