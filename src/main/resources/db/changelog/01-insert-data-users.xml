@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="andrei" id="insert-users">
+        <insert tableName="users">
+            <column name="id" value="2fd18d7c-f26b-4719-bcc9-bee1f30e6430"/>
+            <column name="first_name" value="Mike"/>
+            <column name="last_name" value="Joseph"/>
+            <column name="email" value="mark.joseph@gmail.com"/>
+            <column name="created_at" value="2020-01-01 00:00:01"/>
+            <column name="updated_at" value="2020-01-01 00:00:01"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

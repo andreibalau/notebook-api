@@ -2,7 +2,6 @@ package com.app.notebook.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,9 +17,7 @@ import java.util.UUID;
 @Table(name = "user_space")
 public class UserSpace {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(columnDefinition = "uuid")
+    @GeneratedValue
     private UUID id;
 
     @OneToOne
