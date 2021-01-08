@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "categories")
-public class Category {
+public class Category extends Auditable {
 
     @Id
     @GeneratedValue
@@ -29,14 +28,6 @@ public class Category {
     @NotBlank
     @Column(name = "name", nullable = false)
     private String name;
-
-    @NotNull
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @NotNull
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     @NotNull
     @Column(name = "enabled", nullable = false)

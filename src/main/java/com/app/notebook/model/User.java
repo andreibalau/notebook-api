@@ -1,13 +1,10 @@
 package com.app.notebook.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -20,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Auditable {
 
     @Id
     @GeneratedValue
@@ -39,11 +36,4 @@ public class User {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 }

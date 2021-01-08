@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "file_rights")
-public class FileRight {
+public class FileRight extends Auditable {
 
     @Id
     @GeneratedValue

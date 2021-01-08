@@ -8,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -20,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "subcategories")
-public class Subcategory {
+public class Subcategory extends Auditable {
 
     @Id
     @GeneratedValue
@@ -29,14 +28,6 @@ public class Subcategory {
     @NotBlank
     @Column(name = "name", nullable = false)
     private String name;
-
-    @NotNull
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @NotNull
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     @NotNull
     @Column(name = "enabled", nullable = false)

@@ -21,6 +21,6 @@ public class UploadFileDto {
     @NotBlank
     private String name;
     @NotNull
-    private UserSpaceDto space;
+    private UserSpaceDto userSpace;
     private List<FileRightDto> rights;
 }

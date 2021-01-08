@@ -3,13 +3,10 @@ package com.app.notebook.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "files")
-public class File {
+public class File extends Auditable {
 
     @Id
     @GeneratedValue
@@ -37,14 +34,6 @@ public class File {
     @NotBlank
     @Column(name = "name", unique = true, nullable = false)
     private String name;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     @NotNull
     @ManyToOne
@@ -62,4 +51,3 @@ public class File {
     }
 
 }
-

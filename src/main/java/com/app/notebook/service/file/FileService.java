@@ -1,15 +1,18 @@
 package com.app.notebook.service.file;
 
 import com.app.notebook.model.File;
+import com.app.notebook.model.UserSpace;
 import com.app.notebook.model.dto.UploadFileDto;
 import com.app.notebook.model.mapper.Mapper;
 import com.app.notebook.repository.FileRepository;
+import com.app.notebook.repository.UserSpaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class FileService {
 
     private final FileRepository fileRepository;
+    private final UserSpaceRepository userSpaceRepository;
     private final Mapper mapper;
     private int fileNameIndex = 0;
 
@@ -32,8 +36,11 @@ public class FileService {
     }
 
     private java.io.File saveToDisk(UploadFileDto userFile) throws IOException {
+        UserSpace userSpace = userSpaceRepository.findById(userFile.getUserSpace().getId()).orElseThrow(NoSuchElementException::new);
+        String dirPath = userSpace.getDirPath();
+
         UUID id = UUID.randomUUID();
-        java.io.File file = new java.io.File(id.toString() + ".txt");
+        java.io.File file = new java.io.File(dirPath + "/" + id.toString() + ".txt");
         file.createNewFile();
         if (!file.canWrite()) {
             throw new IOException("Oops, can't write to this file!");

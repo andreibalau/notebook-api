@@ -37,6 +37,12 @@
             <column name="user_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet author="Andrei (generated)" id="1607185788281-3">
@@ -89,6 +95,15 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="user_space_pkey"/>
             </column>
             <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dir_path" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="false"/>
             </column>
         </createTable>
