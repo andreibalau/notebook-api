@@ -15,5 +15,7 @@ public class UserSpaceDto {
     @NotBlank
     private UUID id;
     @NotBlank
+    private String name;
+    @NotBlank
     private UserDto user;
 }

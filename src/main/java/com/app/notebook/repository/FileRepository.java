@@ -4,6 +4,7 @@ import com.app.notebook.model.File;
 import com.app.notebook.model.UserSpace;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -11,5 +12,7 @@ import java.util.UUID;
  */
 public interface FileRepository extends JpaRepository<File, UUID> {
 
-    boolean existsBySpaceAndName(UserSpace space, String name);
+    Optional<File> findByUserSpace_IdAndName(UUID userSpaceId, String fileName);
+
+    boolean existsByUserSpaceAndName(UserSpace userSpace, String name);
 }

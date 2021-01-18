@@ -2,6 +2,7 @@ package com.app.notebook.model.mapper;
 
 import com.app.notebook.model.File;
 import com.app.notebook.model.UserSpace;
+import com.app.notebook.model.dto.FileDto;
 import com.app.notebook.model.dto.UploadFileDto;
 import com.app.notebook.model.dto.UserSpaceDto;
 import org.modelmapper.ModelMapper;
@@ -19,8 +20,12 @@ public class Mapper {
         return mapper.map(uploadFileDto, File.class);
     }
 
-    public static UserSpace map(UserSpaceDto userSpaceDto) {
-        return mapper.map(userSpaceDto, UserSpace.class);
+    public static FileDto map(File file) {
+        return mapper.map(file, FileDto.class);
+    }
+
+    public static UserSpace map(UserSpaceDto createUserSpaceDto) {
+        return mapper.map(createUserSpaceDto, UserSpace.class);
     }
 
     public static UserSpaceDto map(UserSpace userSpace) {

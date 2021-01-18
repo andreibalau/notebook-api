@@ -24,7 +24,6 @@ import java.util.UUID;
 public class File extends Auditable {
 
     @Id
-    @GeneratedValue
     private UUID id;
 
     @NotBlank
@@ -32,14 +31,14 @@ public class File extends Auditable {
     private String path;
 
     @NotBlank
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotNull
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "space_id", nullable = false)
-    private UserSpace space;
+    @JoinColumn(name = "userspace_id", nullable = false)
+    private UserSpace userSpace;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

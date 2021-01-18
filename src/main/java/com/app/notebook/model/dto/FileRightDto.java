@@ -1,15 +1,15 @@
 package com.app.notebook.model.dto;
 
 import com.app.notebook.model.AccessType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FileRightDto {
 
     @NotNull

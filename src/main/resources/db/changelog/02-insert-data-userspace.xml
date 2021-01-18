@@ -7,6 +7,7 @@
     <changeSet author="andrei" id="insert-userspace">
         <insert tableName="user_space">
             <column name="id" value="3f3dc8af-7192-4383-93ac-dd0ce26c5a56"/>
+            <column name="name" value="test"/>
             <column name="user_id" value="2fd18d7c-f26b-4719-bcc9-bee1f30e6430"/>
             <column name="dir_path"
                     value="files/2fd18d7c-f26b-4719-bcc9-bee1f30e6430/3f3dc8af-7192-4383-93ac-dd0ce26c5a56"/>
