@@ -7,13 +7,10 @@ import com.app.notebook.model.dto.UploadFileDto;
 import com.app.notebook.model.mapper.Mapper;
 import com.app.notebook.repository.FileRepository;
 import com.app.notebook.repository.UserSpaceRepository;
+import com.app.notebook.util.FileProcessor;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.util.FileUtil;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -23,67 +20,63 @@ public class FileService {
 
     private final FileRepository fileRepository;
     private final UserSpaceRepository userSpaceRepository;
+    private final FileProcessor localDiskFileProcessor;
     private int fileNameIndex = 0;
 
-    public FileDto read(UUID userSpaceId, String fileName) throws IOException {
+    public FileDto read(UUID userSpaceId, String fileName){
         File file = fileRepository.findByUserSpace_IdAndName(userSpaceId, fileName).orElseThrow(NoSuchElementException::new);
         String filePath = file.getPath();
 
         FileDto response = Mapper.map(file);
-        response.setFile(readFromDisk(filePath));
+        response.setFile(localDiskFileProcessor.read(filePath));
 
         return response;
     }
 
-
-    public FileDto save(UploadFileDto userFileDto) throws IOException {
-        UUID id = UUID.randomUUID();
-        java.io.File fileStored = saveToDisk(userFileDto, id);
-
+    public FileDto save(UploadFileDto userFileDto){
         File file = Mapper.map(userFileDto);
-        file.setId(id);
-        file.setPath(fileStored.getPath());
+        UUID id = UUID.randomUUID();
 
-        if (fileRepository.existsByUserSpaceAndName(file.getUserSpace(), file.getName())) {
-            file.setName(duplicateFileNameSolver(file));
-        }
+        java.io.File localFile = saveToDisk(file, id);
+        preConstructFile(file, localFile, id);
 
         file = fileRepository.save(file);
+        file.setFile(userFileDto.getFile());
         FileDto response = Mapper.map(file);
-        response.setFile(userFileDto.getFile());
 
         return response;
     }
 
-    private byte[] readFromDisk(String filePath) throws IOException {
-        return FileUtil.readAsByteArray(new java.io.File(filePath));
+    private java.io.File saveToDisk(File file, UUID id){
+        String dirPath = getDirPath(file.getUserSpace());
+        return localDiskFileProcessor.save(dirPath, id.toString(), file.getFile());
     }
 
-    private java.io.File saveToDisk(UploadFileDto userFileDto, UUID fileName) throws IOException {
-        UserSpace userSpace = userSpaceRepository.findById(userFileDto.getUserSpace().getId()).orElseThrow(NoSuchElementException::new);
-        String dirPath = userSpace.getDirPath();
+    private void preConstructFile(File file,java.io.File localFile, UUID id){
+        file.setId(id);
+        file.setPath(localFile.getPath());
 
-        java.io.File file = new java.io.File(dirPath + "/" + fileName.toString() + ".txt");
-        file.createNewFile();
-        if (!file.canWrite()) {
-            throw new IOException("Oops, can't write to this file!");
+        UserSpace userSpace = file.getUserSpace();
+        String fileName = file.getName();
+
+        if (fileRepository.existsByUserSpaceAndName(userSpace, fileName)) {
+            file.setName(duplicateNameSolver(userSpace,fileName));
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        String source = new String(userFileDto.getFile(), "UTF-8");
-        writer.write(source);
-        writer.flush();
-        writer.close();
-
-        return file;
     }
 
-    private String duplicateFileNameSolver(File file) {
+    private String getDirPath(UserSpace userSpace){
+        UserSpace userSpaceRetrieved = userSpaceRepository.findById(userSpace.getId()).orElseThrow(NoSuchElementException::new);
+        return userSpaceRetrieved.getDirPath();
+    }
+
+    private String duplicateNameSolver(UserSpace userSpace, String fileName) {
         fileNameIndex++;
-        String fileName = String.format("%s(%s)", file.getName(), fileNameIndex);
-        if (!fileRepository.existsByUserSpaceAndName(file.getUserSpace(), fileName)) {
+        String fileNameGenerated = String.format("%s(%s)", fileName, fileNameIndex);
+        if (!fileRepository.existsByUserSpaceAndName(userSpace, fileNameGenerated)) {
             fileNameIndex = 0;
-            return fileName;
+            return fileNameGenerated;
         }
-        return duplicateFileNameSolver(file);
+        return duplicateNameSolver(userSpace, fileName);
     }
+
 }

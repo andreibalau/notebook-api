@@ -19,7 +19,7 @@ public class UserSpaceController {
     private final UserSpaceService userSpaceService;
 
     @PostMapping
-    public UserSpaceDto createUserSpace(@RequestBody UserSpaceDto userSpaceDto) {
+    public UserSpaceDto create(@RequestBody UserSpaceDto userSpaceDto) {
         return userSpaceService.save(userSpaceDto);
     }
 }

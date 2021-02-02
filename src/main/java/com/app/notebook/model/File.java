@@ -26,6 +26,9 @@ public class File extends Auditable {
     @Id
     private UUID id;
 
+    @Transient
+    private byte[] file;
+
     @NotBlank
     @Column(name = "path", unique = true, nullable = false)
     private String path;

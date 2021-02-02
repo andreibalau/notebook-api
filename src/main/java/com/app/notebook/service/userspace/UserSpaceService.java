@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserSpaceService {
+public class UserSpaceService {//TODO: reformat code as in fileservice
 
     private final UserSpaceRepository userSpaceRepository;
 
